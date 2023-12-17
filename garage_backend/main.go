@@ -45,5 +45,13 @@ func main() {
 		return nil, err
 	})
 
+	app.PUT("/updatestatus/{car_no}/{status}", func(ctx *gofr.Context) (interface{}, error) {
+		car_no := ctx.PathParam("car_no")
+		status := ctx.PathParam("status")
+		_, err := ctx.DB().ExecContext(ctx, "UPDATE car_status SET status = ? WHERE car_no = ?", status, car_no)
+
+		return nil, err
+	})
+
 	app.Start()
 }
