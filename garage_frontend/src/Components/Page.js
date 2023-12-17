@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import "./Page.css";
 function Page() {
   const [cars, setCars] = useState([]);
   const [newCarNo, setNewCarNo] = useState("");
@@ -7,7 +7,7 @@ function Page() {
   const [deleteCarNo, setDeleteCarNo] = useState("");
   const [updateCarNo, setUpdateCarNo] = useState("");
   const [updateStatus, setUpdateStatus] = useState("");
-
+  const [selectedCar, setSelectedCar] = useState(null);
   useEffect(() => {
     fetchCarDetails();
   }, []);
@@ -31,9 +31,12 @@ function Page() {
         }
       );
       fetchCarDetails();
+
     } catch (error) {
       console.error("Error adding car:", error);
     }
+    setNewCarNo("")
+    setNewStatus("")
   };
 
   const handleDeleteCar = async () => {
@@ -45,6 +48,7 @@ function Page() {
     } catch (error) {
       console.error("Error deleting car:", error);
     }
+    setDeleteCarNo("")
   };
 
   const handleUpdateStatus = async () => {
@@ -59,59 +63,79 @@ function Page() {
     } catch (error) {
       console.error("Error updating status:", error);
     }
+    setUpdateCarNo("")
+    setUpdateStatus("")
+  };
+  const handleToggleDetails = (carNo) => {
+    setSelectedCar(selectedCar === carNo ? null : carNo);
   };
   return (
-    <div>
-      <h1>Car Details</h1>
+    <div className="page">
+      <h1>Car Garage</h1>
 
-      <h2>Add Car</h2>
-      <div>
-        <label>Car No:</label>
-        <input
-          type="text"
-          value={newCarNo}
-          onChange={(e) => setNewCarNo(e.target.value)}
-        />
+      <div className="centered-container">
+        <h2 onClick={() => handleToggleDetails("addCar")}>Add Car</h2>
+        <h2 onClick={() => handleToggleDetails("deleteCar")}>Delete Car</h2>
+        <h2 onClick={() => handleToggleDetails("updateStatus")}>
+          Update Status
+        </h2>
       </div>
-      <div>
-        <label>Status:</label>
-        <input
-          type="text"
-          value={newStatus}
-          onChange={(e) => setNewStatus(e.target.value)}
-        />
+      <div className="form-container">
+        {selectedCar === "addCar" && (
+          <div>
+            <label>Car No:</label>
+            <input
+              type="text"
+              value={newCarNo}
+              onChange={(e) => setNewCarNo(e.target.value)}
+            />
+            <br />
+            <label>Status:</label>
+            <input
+              type="text"
+              value={newStatus}
+              onChange={(e) => setNewStatus(e.target.value)}
+            />
+            <br />
+            <button onClick={handleAddCar}>Add Car</button>
+          </div>
+        )}
       </div>
-      <button onClick={handleAddCar}>Add Car</button>
-
-      <h2>Delete Car</h2>
-      <div>
-        <label>Car No:</label>
-        <input
-          type="text"
-          value={deleteCarNo}
-          onChange={(e) => setDeleteCarNo(e.target.value)}
-        />
+      <div className="form-container">
+      {selectedCar === "deleteCar" && (
+        <div>
+          <label>Car No:</label>
+          <input
+            type="text"
+            value={deleteCarNo}
+            onChange={(e) => setDeleteCarNo(e.target.value)}
+          />
+          <br />
+          <button onClick={handleDeleteCar}>Delete Car</button>
+        </div>
+      )}
       </div>
-      <button onClick={handleDeleteCar}>Delete Car</button>
-
-      <h2>Update Status</h2>
-      <div>
-        <label>Car No:</label>
-        <input
-          type="text"
-          value={updateCarNo}
-          onChange={(e) => setUpdateCarNo(e.target.value)}
-        />
+      <div className="form-container">
+      {selectedCar === "updateStatus" && (
+        <div>
+          <label>Car No:</label>
+          <input
+            type="text"
+            value={updateCarNo}
+            onChange={(e) => setUpdateCarNo(e.target.value)}
+          />
+          <br />
+          <label>Status:</label>
+          <input
+            type="text"
+            value={updateStatus}
+            onChange={(e) => setUpdateStatus(e.target.value)}
+          />
+          <br />
+          <button onClick={handleUpdateStatus}>Update Status</button>
+        </div>
+      )}
       </div>
-      <div>
-        <label>Status:</label>
-        <input
-          type="text"
-          value={updateStatus}
-          onChange={(e) => setUpdateStatus(e.target.value)}
-        />
-      </div>
-      <button onClick={handleUpdateStatus}>Update Status</button>
     </div>
   );
 }
