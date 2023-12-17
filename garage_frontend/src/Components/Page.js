@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./Page.css";
 function Page() {
   const [cars, setCars] = useState([]);
@@ -8,20 +8,17 @@ function Page() {
   const [updateCarNo, setUpdateCarNo] = useState("");
   const [updateStatus, setUpdateStatus] = useState("");
   const [selectedCar, setSelectedCar] = useState(null);
-  useEffect(() => {
-    fetchCarDetails();
-  }, []);
 
   const fetchCarDetails = async () => {
     try {
       const response = await fetch("http://localhost:9000/getcardetails");
       const data = await response.json();
-      setCars(data);
+      await setCars(data);
+      console.log(cars);
     } catch (error) {
       console.error("Error fetching car details:", error);
     }
   };
-
   const handleAddCar = async () => {
     try {
       await fetch(
@@ -30,13 +27,11 @@ function Page() {
           method: "POST",
         }
       );
-      fetchCarDetails();
-
     } catch (error) {
       console.error("Error adding car:", error);
     }
-    setNewCarNo("")
-    setNewStatus("")
+    setNewCarNo("");
+    setNewStatus("");
   };
 
   const handleDeleteCar = async () => {
@@ -44,11 +39,10 @@ function Page() {
       await fetch(`http://localhost:9000/deletecardetails/${deleteCarNo}`, {
         method: "DELETE",
       });
-      fetchCarDetails();
     } catch (error) {
       console.error("Error deleting car:", error);
     }
-    setDeleteCarNo("")
+    setDeleteCarNo("");
   };
 
   const handleUpdateStatus = async () => {
@@ -59,12 +53,11 @@ function Page() {
           method: "PUT",
         }
       );
-      fetchCarDetails();
     } catch (error) {
       console.error("Error updating status:", error);
     }
-    setUpdateCarNo("")
-    setUpdateStatus("")
+    setUpdateCarNo("");
+    setUpdateStatus("");
   };
   const handleToggleDetails = (carNo) => {
     setSelectedCar(selectedCar === carNo ? null : carNo);
@@ -78,6 +71,14 @@ function Page() {
         <h2 onClick={() => handleToggleDetails("deleteCar")}>Delete Car</h2>
         <h2 onClick={() => handleToggleDetails("updateStatus")}>
           Update Status
+        </h2>
+        <h2
+          onClick={() => {
+            handleToggleDetails("carList");
+            fetchCarDetails();
+          }}
+        >
+          Car List
         </h2>
       </div>
       <div className="form-container">
@@ -102,40 +103,51 @@ function Page() {
         )}
       </div>
       <div className="form-container">
-      {selectedCar === "deleteCar" && (
-        <div>
-          <label>Car No:</label>
-          <input
-            type="text"
-            value={deleteCarNo}
-            onChange={(e) => setDeleteCarNo(e.target.value)}
-          />
-          <br />
-          <button onClick={handleDeleteCar}>Delete Car</button>
-        </div>
-      )}
+        {selectedCar === "deleteCar" && (
+          <div>
+            <label>Car No:</label>
+            <input
+              type="text"
+              value={deleteCarNo}
+              onChange={(e) => setDeleteCarNo(e.target.value)}
+            />
+            <br />
+            <button onClick={handleDeleteCar}>Delete Car</button>
+          </div>
+        )}
       </div>
       <div className="form-container">
-      {selectedCar === "updateStatus" && (
-        <div>
-          <label>Car No:</label>
-          <input
-            type="text"
-            value={updateCarNo}
-            onChange={(e) => setUpdateCarNo(e.target.value)}
-          />
-          <br />
-          <label>Status:</label>
-          <input
-            type="text"
-            value={updateStatus}
-            onChange={(e) => setUpdateStatus(e.target.value)}
-          />
-          <br />
-          <button onClick={handleUpdateStatus}>Update Status</button>
+        {selectedCar === "updateStatus" && (
+          <div>
+            <label>Car No:</label>
+            <input
+              type="text"
+              value={updateCarNo}
+              onChange={(e) => setUpdateCarNo(e.target.value)}
+            />
+            <br />
+            <label>Status:</label>
+            <input
+              type="text"
+              value={updateStatus}
+              onChange={(e) => setUpdateStatus(e.target.value)}
+            />
+            <br />
+            <button onClick={handleUpdateStatus}>Update Status</button>
+          </div>
+        )}
+      </div>
+      {selectedCar === "carList" && Array.isArray(cars) && (
+        <div className="car-list-container">
+          <ul>
+            {cars.map((car) => (
+              <li key={car.car_no}>
+                Car No: {car.car_no}, Status: {car.status}
+              </li>
+            ))}
+          </ul>
         </div>
       )}
-      </div>
     </div>
   );
 }
