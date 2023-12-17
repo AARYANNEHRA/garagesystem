@@ -8,13 +8,13 @@ function Page() {
   const [updateCarNo, setUpdateCarNo] = useState("");
   const [updateStatus, setUpdateStatus] = useState("");
   const [selectedCar, setSelectedCar] = useState(null);
-
+  
   const fetchCarDetails = async () => {
     try {
       const response = await fetch("http://localhost:9000/getcardetails");
       const data = await response.json();
       await setCars(data);
-      console.log(cars);
+      console.log(cars)
     } catch (error) {
       console.error("Error fetching car details:", error);
     }
@@ -72,14 +72,7 @@ function Page() {
         <h2 onClick={() => handleToggleDetails("updateStatus")}>
           Update Status
         </h2>
-        <h2
-          onClick={() => {
-            handleToggleDetails("carList");
-            fetchCarDetails();
-          }}
-        >
-          Car List
-        </h2>
+        <h2 onClick={() => {handleToggleDetails("carList"); fetchCarDetails();}}>Car List</h2>
       </div>
       <div className="form-container">
         {selectedCar === "addCar" && (
@@ -137,17 +130,18 @@ function Page() {
           </div>
         )}
       </div>
-      {selectedCar === "carList" && Array.isArray(cars) && (
-        <div className="car-list-container">
-          <ul>
-            {cars.map((car) => (
-              <li key={car.car_no}>
-                Car No: {car.car_no}, Status: {car.status}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      {selectedCar === 'carList' && Array.isArray(cars) && (
+  <div className="car-list-container">
+    <ul>
+      {cars.map((car) => (
+        <li key={car.car_no}>
+          Car No: {car.car_no}, Status: {car.status}
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
+ 
     </div>
   );
 }
