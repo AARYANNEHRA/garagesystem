@@ -38,5 +38,12 @@ func main() {
 		return cars, nil
 	})
 
+	app.DELETE("/deletecardetails/{car_no}", func(ctx *gofr.Context) (interface{}, error) {
+		car_no := ctx.PathParam("car_no")
+		_, err := ctx.DB().ExecContext(ctx, "DELETE FROM car_status WHERE car_no = ?", car_no)
+
+		return nil, err
+	})
+
 	app.Start()
 }
