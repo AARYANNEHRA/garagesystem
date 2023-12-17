@@ -1,0 +1,91 @@
+{
+	"info": {
+		"_postman_id": "decff2c0-0cbc-4c90-a6b7-3d58425504a4",
+		"name": "car Garage",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31390663"
+	},
+	"item": [
+		{
+			"name": "adding car",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/postcardetails/up15ab1234/completed",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"postcardetails",
+						"up15ab1234",
+						"completed"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getting all car details",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/getcardetails",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"getcardetails"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleting car details",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/deletecardetails/up15ab1234",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"deletecardetails",
+						"up15ab1234"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updating car status",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/updatestatus/up15ab1234/completed",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"updatestatus",
+						"up15ab1234",
+						"completed"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
